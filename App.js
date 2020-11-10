@@ -13,6 +13,7 @@ import InternasionalNews from "./NewsFolder/InternasionalNews";
 import NasionalNews from "./NewsFolder/NasionalNews";
 import TeknologiNews from "./NewsFolder/TeknologiNews";
 import OlahragaNews from "./NewsFolder/OlahragaNews";
+import { FlatList } from "react-native-gesture-handler";
 
 function HomeScreen({ navigation }) {
   return (
