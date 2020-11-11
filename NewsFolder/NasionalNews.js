@@ -1,5 +1,3 @@
-import { Link } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
   FlatList,
@@ -42,69 +40,29 @@ export default class News extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor={"#ffffff"} />
         <FlatList
           data={newsData.data}
-          style={styles.listStyle}
           keyExtractor={(item, index) => `${item}--${index}`}
           renderItem={({ item }) => (
             <TouchableOpacity
+              style={styles.touchable}
               onPress={() => {
                 Linking.openURL(item.link);
               }}
-              style={styles.customCard}
             >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
+              <Image
+                style={styles.img}
+                source={{
+                  uri: item.poster,
                 }}
-              >
-                <Image
-                  style={styles.tinyLogo}
-                  source={{
-                    uri: item.poster,
-                  }}
-                />
-                <View style={styles.rightContainer}>
-                  <View style={styles.head}>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                      }}
-                    >
-                      {/* Kategori */}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                      }}
-                    >
-                      {item.tipe}
-                    </Text>
-                  </View>
-                  <Text
-                    style={{ flex: 1, flexWrap: "wrap" }}
-                    numberOfLines={2}
-                    ellipsizeMode={"tail"}
-                  >
-                    {item.judul}
-                  </Text>
-                  <Text
-                    style={{
-                      flex: 1,
-                      flexWrap: "wrap",
-                      fontSize: 12,
-                      color: "gray",
-                    }}
-                    numberOfLines={2}
-                    ellipsizeMode={"tail"}
-                  >
-                    {item.waktu}
-                  </Text>
+              />
+              <View style={styles.rightContainer}>
+                <View style={styles.head}>
+                  <Text style={styles.timePosted}>{item.waktu}</Text>
                 </View>
+                <Text style={styles.headline} numberOfLines={2}>
+                  {item.judul}
+                </Text>
               </View>
             </TouchableOpacity>
           )}
@@ -116,37 +74,53 @@ export default class News extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    marginTop: 4,
-  },
-  customCard: {
-    elevation: 2,
-    borderRadius: 5,
-    paddingHorizontal: 8,
-    paddingVertical: 5,
-    marginHorizontal: 10,
+    backgroundColor: "#f2f2f2",
     marginVertical: 5,
+  },
+  touchable: {
+    borderRadius: 5,
+    backgroundColor: "white",
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    marginHorizontal: 8,
+    marginVertical: 2.5,
     flexDirection: "row",
     alignSelf: "baseline",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 4,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  img: {
+    width: 80,
+    height: 80,
+    marginHorizontal: 1,
+    marginVertical: 1,
   },
   rightContainer: {
-    flexDirection: "column",
     flex: 1,
-  },
-  tinyLogo: {
-    width: 60,
-    height: 60,
-    marginRight: 5,
-    flex: 0,
+    flexDirection: "column",
+    marginHorizontal: 5,
   },
   head: {
+    flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+  },
+  timePosted: {
+    flex: 1,
+    fontSize: 10,
+    color: "gray",
+  },
+  headline: {
+    flex: 3,
+    fontSize: 15,
+    textAlign: "justify",
   },
   mainContainer: {
     paddingTop: 50,
-  },
-  listStyle: {
-    marginTop: 30,
   },
 });
