@@ -17,7 +17,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Kategori" component={HomeScreen} />
         <Stack.Screen name="Semua Berita" component={News} />
         <Stack.Screen name="Nasional" component={NasionalNews} />
         <Stack.Screen name="Internasional" component={InternasionalNews} />
