@@ -59,6 +59,7 @@ export default class News extends React.Component {
               <View style={styles.rightContainer}>
                 <View style={styles.head}>
                   <Text style={styles.timePosted}>{item.waktu}</Text>
+                  <Text style={styles.category}>{item.tipe}</Text>
                 </View>
                 <Text style={styles.headline} numberOfLines={2}>
                   {item.judul}
@@ -114,6 +115,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 10,
     color: "gray",
+  },
+  category: {
+    flex: 1,
+    fontSize: 12,
+    color: "gray",
+    textAlign: "right",
   },
   headline: {
     flex: 3,
