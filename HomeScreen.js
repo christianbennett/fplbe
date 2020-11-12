@@ -145,6 +145,6 @@ const styles = StyleSheet.create({
   textContent: {
     textAlign: "center",
     textAlignVertical: "center",
-    fontSize: 21,
+    fontSize: 20,
   },
 });
