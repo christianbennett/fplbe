@@ -158,5 +158,6 @@ const styles = StyleSheet.create({
   textContent: {
     textAlign: "center",
     fontSize: 20,
+    color: "maroon",
   },
 });
