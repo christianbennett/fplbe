@@ -50,20 +50,24 @@ export default class News extends React.Component {
                 Linking.openURL(item.link);
               }}
             >
-              <Image
-                style={styles.img}
-                source={{
-                  uri: item.poster,
-                }}
-              />
+              <View style={styles.leftContainer}>
+                <Image
+                  style={styles.img}
+                  source={{
+                    uri: item.poster,
+                  }}
+                />
+              </View>
               <View style={styles.rightContainer}>
                 <View style={styles.head}>
-                  <Text style={styles.timePosted}>{item.waktu}</Text>
-                  <Text style={styles.category}>{item.tipe}</Text>
+                  <Text style={styles.timePosted}> {item.waktu}</Text>
+                  <Text style={styles.category}>{item.tipe} </Text>
                 </View>
-                <Text style={styles.headline} numberOfLines={2}>
-                  {item.judul}
-                </Text>
+                <View style={styles.body}>
+                  <Text style={styles.headline} numberOfLines={2}>
+                    {item.judul}
+                  </Text>
+                </View>
               </View>
             </TouchableOpacity>
           )}
@@ -80,7 +84,6 @@ const styles = StyleSheet.create({
   },
   touchable: {
     borderRadius: 5,
-    backgroundColor: "white",
     paddingHorizontal: 5,
     paddingVertical: 5,
     marginHorizontal: 8,
@@ -96,11 +99,17 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
   },
+  leftContainer: {
+    backgroundColor: "white",
+    padding: 1,
+    borderRadius: 5,
+  },
   img: {
     width: 80,
     height: 80,
     marginHorizontal: 1,
     marginVertical: 1,
+    borderRadius: 5,
   },
   rightContainer: {
     flex: 1,
@@ -110,24 +119,39 @@ const styles = StyleSheet.create({
   head: {
     flex: 1,
     flexDirection: "row",
+    backgroundColor: "#800000",
+    paddingHorizontal: 3,
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
+    alignItems: "center",
   },
   timePosted: {
-    flex: 1,
+    flex: 3,
     fontSize: 10,
-    color: "gray",
+    color: "white",
   },
   category: {
     flex: 1,
-    fontSize: 12,
-    color: "gray",
+    fontSize: 10,
+    color: "white",
     textAlign: "right",
   },
+  body: {
+    flex: 7,
+    flexDirection: "column",
+    backgroundColor: "white",
+    borderBottomLeftRadius: 3,
+    borderBottomRightRadius: 3,
+    padding: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+  },
   headline: {
-    flex: 3,
+    flex: 1,
     fontSize: 15,
     textAlign: "justify",
-  },
-  mainContainer: {
-    paddingTop: 50,
+    paddingHorizontal: 5,
+    paddingTop: 5,
   },
 });
