@@ -8,73 +8,96 @@ import {
   Text,
   TouchableOpacity,
   View,
+  RefreshControl,
 } from "react-native";
 
 const BASE_URL = "https://www.news.developeridn.com/hiburan";
 
-export default class News extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      newsData: {},
-    };
-  }
+export default function News() {
+  const [newsData, setNewsData] = React.useState({});
 
-  componentDidMount() {
-    this.getAllNews();
-  }
+  const getAllNews = async () => {
+    try {
+      let response = await fetch(BASE_URL, {
+        method: "GET",
+        mode: "cors",
+        credentials: "same-origin",
+        Vary: "Origin",
+        headers: {
+          "Access-Control-Allow-Origin":
+            "https://www.news.developeridn.com/hiburan",
+        },
+      });
+      let jsonData = await response.json();
+      setNewsData(jsonData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  getAllNews() {
-    fetch(BASE_URL)
-      .then((response) => response.json())
-      .then((json) =>
-        this.setState({
-          newsData: json,
-        })
-      )
-      .catch((error) => console.log(error));
-  }
+  React.useEffect(() => {
+    getAllNews();
+  });
 
-  render() {
-    const { newsData } = this.state;
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [listData, setListData] = React.useState(newsData);
 
-    return (
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={newsData.data}
-          keyExtractor={(item, index) => `${item}--${index}`}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.touchable}
-              onPress={() => {
-                Linking.openURL(item.link);
-              }}
-            >
-              <View style={styles.leftContainer}>
-                <Image
-                  style={styles.img}
-                  source={{
-                    uri: item.poster,
-                  }}
-                />
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    if (listData.length < 10) {
+      try {
+        let response = await fetch("https://www.news.developeridn.com/");
+        let responseJson = await response.json();
+        console.log(responseJson);
+        setListData(responseJson.result.concat(initialData));
+        setRefreshing(false);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setRefreshing(false);
+    }
+  }, [refreshing]);
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={newsData.data}
+        keyExtractor={(item, index) => `${item}--${index}`}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.touchable}
+            onPress={() => {
+              Linking.openURL(item.link);
+            }}
+          >
+            <View style={styles.leftContainer}>
+              <Image
+                style={styles.img}
+                source={{
+                  uri: item.poster,
+                }}
+              />
+            </View>
+            <View style={styles.rightContainer}>
+              <View style={styles.head}>
+                <Text style={styles.timePosted}> {item.waktu}</Text>
+                <Text style={styles.category}>{item.tipe} </Text>
               </View>
-              <View style={styles.rightContainer}>
-                <View style={styles.head}>
-                  <Text style={styles.timePosted}> {item.waktu}</Text>
-                  <Text style={styles.category}>{item.tipe} </Text>
-                </View>
-                <View style={styles.body}>
-                  <Text style={styles.headline} numberOfLines={2}>
-                    {item.judul}
-                  </Text>
-                </View>
+              <View style={styles.body}>
+                <Text style={styles.headline} numberOfLines={2}>
+                  {item.judul}
+                </Text>
               </View>
-            </TouchableOpacity>
-          )}
-        />
-      </SafeAreaView>
-    );
-  }
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -142,8 +165,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderBottomLeftRadius: 3,
     borderBottomRightRadius: 3,
-    padding: 1,
-    alignItems: "center",
     justifyContent: "center",
     alignContent: "center",
   },
