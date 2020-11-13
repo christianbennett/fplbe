@@ -40,23 +40,24 @@ export default function News() {
   });
 
   const [refreshing, setRefreshing] = React.useState(false);
-  const [listData, setListData] = React.useState(newsData);
+  // const [listData, setListData] = React.useState(newsData);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    if (listData.length < 10) {
-      try {
-        let response = await fetch("https://www.news.developeridn.com/");
-        let responseJson = await response.json();
-        console.log(responseJson);
-        setListData(responseJson.result.concat(initialData));
-        setRefreshing(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
+    // if (listData.length < 10) {
+    try {
+      let response = await fetch("https://www.news.developeridn.com/");
+      let responseJson = await response.json();
+      console.log(responseJson);
+      setListData(responseJson.result.concat(initialData));
       setRefreshing(false);
+    } catch (error) {
+      console.error(error);
     }
+    // }
+    // else {
+    setRefreshing(false);
+    // }
   }, [refreshing]);
 
   return (
